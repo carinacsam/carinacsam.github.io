@@ -112,17 +112,19 @@ def swap_3opt(tour, cities, city1, city2, city3):
     dist5 = distance(cities[tour6], cities[tour2]) + distance(cities[tour3],
                 cities[tour4]) + distance(cities[tour5], cities[tour1])
 
-    #See corresponding diagram in Design Doc for cases:
+    #See corresponding diagram in Design Doc for cases
+    #(a, b and c are city1, city2, and city3)
     #(Case 1, 2, 3 are completed by the 2-opt swap)
+    new_tour = tour
     if dist1 > dist3:
-        tour[b:c] = reversed(tour[b:c]) #Swap 2-3 (Case 4)
+        new_tour[city2:city3] = reversed(tour[city2:city3]) #Swap 2-3 (Case 4)
     elif dist1 > dist2:
-        tour[a:b] = reversed(tour[a:b]) #Swap 1-2 (Case 5)
+        new_tour[city1:city2] = reversed(tour[city1:city2]) #Swap 1-2 (Case 5)
     elif dist1 > dist5:
-        tour[a:c] = reversed(tour[a:c]) #Swap 1-3 (Case 6)
+        new_tour[city1:city3] = reversed(tour[city1:city3]) #Swap 1-3 (Case 6)
     elif dist1 > dist4:
-        newPath = tour[b:c] + tour[a:b] 
-        tour[a:c] = newPath #Two-step swap (Case 7)
+        newPath = tour[city2:city3] + tour[city1:city2] 
+        new_tour[city1:city3] = newPath #Two-step swap (Case 7)
     return new_tour #New tour after swap is returned
 
 #Solves the tsp using 3-opt algorithm
@@ -132,7 +134,7 @@ def solve_3opt(tour, cities):
     for i in range(n):
         for j in range(i+1, n):
             for k in range(j+1, n + (i>0)):
-                new_tour = swap_3opt(tour, cities, i, j, k)
+                best_tour = swap_3opt(tour, cities, i, j, k)
     return best_tour #Best tour so far is returned
 
 
